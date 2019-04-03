@@ -1,5 +1,7 @@
 # SonarQube Project Status
 
+![SonarQube Status Resulst](images/logo.png)
+
 SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in production.
 
 This extension can help you get the build status like:
