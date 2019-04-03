@@ -84,43 +84,44 @@ async function showResult(data: any) {
   }`;
   if (projName !== undefined) {
     await client.get(`${sonarURL}`, (data: any, response: any) => {
-      data.component.measures.map((element: any) => {
-        if (element.metric === "coverage") {
-          if (parseInt(element.value) < 80) {
-            vscode.window.showErrorMessage(
-              `Code Coverage is ${element.value}%`
-            );
-          } else {
+      if (response.statusCode === 200) {
+        data.component.measures.map((element: any) => {
+          if (element.metric === "coverage") {
+            if (parseInt(element.value) < 80) {
+              vscode.window.showErrorMessage(
+                `Code Coverage is ${element.value}%`
+              );
+            } else {
+              vscode.window.showInformationMessage(
+                `Code Coverage is ${element.value}%`
+              );
+            }
+          } else if (element.metric === "bugs") {
             vscode.window.showInformationMessage(
-              `Code Coverage is ${element.value}%`
+              `There are ${element.value} Bugs`
+            );
+          } else if (element.metric === "alert_status") {
+            let qualityGate: string;
+            if (element.value === "OK") {
+              vscode.window.showInformationMessage(`Quality Gate is Passed`);
+            } else {
+              vscode.window.showErrorMessage("Quality Gate is Failing");
+            }
+          } else if (element.metric === "code_smells") {
+            vscode.window.showInformationMessage(
+              `There are ${element.value} Smelly Codes`
+            );
+          } else if (element.metric === "vulnerabilities") {
+            vscode.window.showInformationMessage(
+              `There are ${element.value} Vulnerabilities`
             );
           }
-        } else if (element.metric === "bugs") {
-          vscode.window.showInformationMessage(
-            `There are ${element.value} Bugs`
-          );
-        } else if (element.metric === "alert_status") {
-          let qualityGate: string;
-          if (element.value === "OK") {
-            vscode.window.showInformationMessage(`Quality Gate is Passed`);
-          } else {
-            vscode.window.showErrorMessage("Quality Gate is Failing");
-          }
-        } else if (element.metric === "code_smells") {
-          vscode.window.showInformationMessage(
-            `There are ${element.value} Smelly Codes`
-          );
-        } else if (element.metric === "vulnerabilities") {
-          vscode.window.showInformationMessage(
-            `There are ${element.value} Vulnerabilities`
-          );
-        }
-      });
-      // data.component.measures.forEach((element: any) => {
-      //   vscode.window.showInformationMessage(
-      //     `${element.metric}: ${element.value}`
-      //   );
-      // });
+        });
+      } else {
+        vscode.window.showErrorMessage(
+          "Please Double Check the project key and sonarURL"
+        );
+      }
     });
   }
 }

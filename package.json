@@ -2,7 +2,7 @@
 	"name": "sonarqube-status",
 	"displayName": "Project Status",
 	"description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
