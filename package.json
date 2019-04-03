@@ -2,7 +2,7 @@
 	"name": "sonarqube-status",
 	"displayName": "Project Status",
 	"description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
@@ -29,14 +29,12 @@
 	"activationEvents": [
 		"onCommand:extension.getBuildStatus"
 	],
-	"main": "./out/extension.js",
+	"main": "./dist/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.getBuildStatus",
-				"title": "Get Build Status"
-			}
-		]
+		"commands": [{
+			"command": "extension.getBuildStatus",
+			"title": "Get Build Status"
+		}]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
