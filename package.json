@@ -1,25 +1,40 @@
 {
-	"name": "altorum-project-status",
+	"name": "sonarqube-status",
 	"displayName": "Project Status",
 	"description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
-	"version": "0.0.1",
+	"version": "0.0.",
 	"engines": {
 		"vscode": "^1.32.0"
 	},
 	"categories": [
 		"Other"
 	],
+	"author": {
+		"name": "Adithya Sreyaj",
+		"email": "adi.sreyaj@gmail.com",
+		"url": "https://sreyaj.com"
+	},
+	"icon": "images/logo.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/adisreyaj/vscode-sonarqube-status.git"
+	},
+	"publisher": "Adithya Sreyaj",
+	"keywords": [
+		"sonarqube",
+		"static code analyzer",
+		"sonar scanner result",
+		"code covergae"
+	],
 	"activationEvents": [
 		"onCommand:extension.getBuildStatus"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "extension.getBuildStatus",
-				"title": "Get Build Status"
-			}
-		]
+		"commands": [{
+			"command": "extension.getBuildStatus",
+			"title": "Get Build Status"
+		}]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
