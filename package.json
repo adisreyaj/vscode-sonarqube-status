@@ -19,7 +19,7 @@
 		"type": "git",
 		"url": "https://github.com/adisreyaj/vscode-sonarqube-status.git"
 	},
-	"publisher": "Adithya Sreyaj",
+	"publisher": "adisreyaj",
 	"keywords": [
 		"sonarqube",
 		"static code analyzer",
