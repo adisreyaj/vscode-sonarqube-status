@@ -31,6 +31,8 @@ Viola....
 
 ## Features
 
+![Status Bar Item for Easy insight](images/sonar-status-bar.png)
+
 1. You don't have to go outside the IDE to see the status of the code analysis.
 1. Easily accessible from the **Command Palette**
 1. Get the details only when you want it.

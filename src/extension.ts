@@ -1,16 +1,16 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
 var Client = require("node-rest-client").Client;
 var client = new Client();
-var fs = require("fs");
-var obj;
 let projName: string;
 let myStatusBarItem: vscode.StatusBarItem;
-
 import { createNewFile, readFile } from "./helpers";
 export function activate(context: vscode.ExtensionContext) {
   let myCommandId = "extension.getBuildStatus";
+  myStatusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    50
+  );
+  myStatusBarItem.command = myCommandId;
   let disposable = vscode.commands.registerCommand(myCommandId, async () => {
     await readFile(vscode.workspace.rootPath).then(
       data => {
@@ -26,39 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   context.subscriptions.push(disposable);
+  context.subscriptions.push(myStatusBarItem);
 }
-
-// function readFile(): Promise<any> {
-//   return new Promise((resolve, reject) => {
-//     fs.readFile(
-//       `${vscode.workspace.rootPath}/.vscode/project.json`,
-//       "utf8",
-//       (err: any, data: any) => {
-//         if (err) {
-//           reject(err);
-//         } else {
-//           obj = JSON.parse(data);
-//           resolve(obj);
-//         }
-//       }
-//     );
-//   });
-// }
-
-// function createNewFile(): Promise<any> {
-//   return new Promise((resolve, reject) => {
-//     fs.appendFile(
-//       `${vscode.workspace.rootPath}/.vscode/project.json`,
-//       `{"project":"<your-key-here>", "sonarURL": "<your-sonar-url>"}`,
-//       (err: any, data: any) => {
-//         if (err) {
-//           reject(err);
-//         }
-//         resolve(data);
-//       }
-//     );
-//   });
-// }
 
 async function showResult(data: any) {
   projName = data.project;
@@ -89,8 +58,12 @@ async function showResult(data: any) {
             let qualityGate: string;
             if (element.value === "OK") {
               vscode.window.showInformationMessage(`Quality Gate is Passed`);
+              myStatusBarItem.text = `$(megaphone) Sonar Status: Passed $(check)`;
+              myStatusBarItem.show();
             } else {
               vscode.window.showErrorMessage("Quality Gate is Failing");
+              myStatusBarItem.text = `$(megaphone) Sonar Status: Failed $(x)`;
+              myStatusBarItem.show();
             }
           } else if (element.metric === "code_smells") {
             vscode.window.showInformationMessage(
@@ -111,7 +84,4 @@ async function showResult(data: any) {
   }
 }
 
-function updateStatusBarItem(): void {}
-
-// this method is called when your extension is deactivated
 export function deactivate() {}
