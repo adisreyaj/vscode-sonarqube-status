@@ -1,59 +1,59 @@
 {
-	"name": "sonarqube-status",
-	"displayName": "Project Status",
-	"description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
-	"version": "0.0.4",
-	"engines": {
-		"vscode": "^1.32.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"author": {
-		"name": "Adithya Sreyaj",
-		"email": "adi.sreyaj@gmail.com",
-		"url": "https://sreyaj.com"
-	},
-	"icon": "images/logo.png",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/adisreyaj/vscode-sonarqube-status.git"
-	},
-	"publisher": "adisreyaj",
-	"keywords": [
-		"sonarqube",
-		"static code analyzer",
-		"sonar scanner result",
-		"code covergae"
-	],
-	"activationEvents": [
-		"onCommand:extension.getBuildStatus"
-	],
-	"main": "./dist/extension.js",
-	"contributes": {
-		"commands": [{
-			"command": "extension.getBuildStatus",
-			"title": "Get Build Status"
-		}]
-	},
-	"scripts": {
-		"vscode:prepublish": "webpack --mode production",
-		"compile": "webpack --mode none",
-		"watch": "webpack --mode none --watch",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test-compile": "tsc -p ./"
-	},
-	"devDependencies": {
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^10.12.21",
-		"ts-loader": "^5.3.3",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28",
-		"webpack": "^4.29.6",
-		"webpack-cli": "^3.3.0"
-	},
-	"dependencies": {
-		"node-rest-client": "^3.1.0"
-	}
+  "name": "sonarqube-status",
+  "displayName": "SonarQube Project Status",
+  "description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
+  "version": "0.0.5",
+  "engines": {
+    "vscode": "^1.32.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "author": {
+    "name": "Adithya Sreyaj",
+    "email": "adi.sreyaj@gmail.com",
+    "url": "https://sreyaj.com"
+  },
+  "icon": "images/logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adisreyaj/vscode-sonarqube-status.git"
+  },
+  "publisher": "adisreyaj",
+  "keywords": [
+    "sonarqube",
+    "static code analyzer",
+    "sonar scanner result",
+    "code covergae"
+  ],
+  "activationEvents": [
+    "onCommand:extension.getBuildStatus"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "extension.getBuildStatus",
+      "title": "Get Build Status"
+    }]
+  },
+  "scripts": {
+    "vscode:prepublish": "webpack --mode production",
+    "compile": "webpack --mode none",
+    "watch": "webpack --mode none --watch",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test-compile": "tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^10.14.4",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.1",
+    "vscode": "^1.1.28",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "dependencies": {
+    "node-rest-client": "^3.1.0"
+  }
 }

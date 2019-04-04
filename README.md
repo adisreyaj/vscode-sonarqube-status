@@ -4,6 +4,10 @@
 
 SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in production.
 
+It will only work for **Public** projects which doesn't need any Authentication with the SonarQube server.
+
+A Future release for the private Sonar projects is in roadmap.
+
 This extension can help you get the build status like:
 
 - Quality Gate
@@ -48,6 +52,12 @@ Here is how the configuration file looks:
   "sonarURL": "sonar.yourserver.com"
 }
 ```
+
+**NOTE:** Please make sure to add `http://` with your sonarURL and should not have a trailing `/`.
+
+For Eg:<br/>
+`http://sonar.myserver.com` - **Right** <br/>
+`www.sonar.myserver.com/` - **Wrong**
 
 Just fill the file and you are good to go.
 
