@@ -32,9 +32,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 async function showResult(data: any) {
   projName = data.project;
-  const sonarURL = `${data.sonarURL}/api/measures/component?metricKeys=coverage,bugs,code_smells,vulnerabilities,alert_status&componentKey=${data.project}`;
+  const sonarURL = `${data.sonarURL}/api/measures/component?metricKeys=coverage,bugs,code_smells,vulnerabilities,alert_status&component=${data.project}`;
   if (projName !== undefined) {
     await client.get(`${sonarURL}`, (data: any, response: any) => {
+      console.log({ data });
+
       if (response.statusCode === 200) {
         data.component.measures.map((element: any) => {
           if (element.metric === 'coverage') {
