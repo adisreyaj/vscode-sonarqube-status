@@ -24,17 +24,19 @@
     "sonarqube",
     "static code analyzer",
     "sonar scanner result",
-    "code covergae"
+    "code coverage"
   ],
   "activationEvents": [
     "onCommand:extension.getBuildStatus"
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "commands": [{
-      "command": "extension.getBuildStatus",
-      "title": "Get Build Status"
-    }]
+    "commands": [
+      {
+        "command": "extension.getBuildStatus",
+        "title": "SonarQube: Get Build Status"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "webpack --mode production",
@@ -45,13 +47,13 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.42",
-    "@types/node": "^10.14.4",
-    "ts-loader": "^5.3.3",
-    "tslint": "^5.12.1",
-    "typescript": "^3.3.1",
-    "vscode": "^1.1.28",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "@types/node": "^10.17.27",
+    "ts-loader": "^5.4.5",
+    "tslint": "^5.20.1",
+    "typescript": "^3.9.7",
+    "vscode": "^1.1.37",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
   },
   "dependencies": {
     "node-rest-client": "^3.1.0"
