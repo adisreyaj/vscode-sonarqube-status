@@ -1,7 +1,7 @@
 var fs = require("fs");
 
 export type Data = {
-  project: string;
+  project?: string;
   sonarURL: string;
   username: string;
   password: string;

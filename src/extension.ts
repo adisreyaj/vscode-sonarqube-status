@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 var Client = require("node-rest-client").Client;
 
-let projName: string;
 let myStatusBarItem: vscode.StatusBarItem;
 import { createNewFile, Data, readFile } from "./helpers";
 
@@ -36,16 +35,15 @@ type Element = {
 };
 
 async function showResult(data: Data) {
-  projName = data.project;
   const sonarURL = `${data.sonarURL}/api/measures/component?metricKeys=coverage,bugs,code_smells,vulnerabilities,alert_status&component=${data.project}`;
-  if (projName !== undefined) {
+  if (data.project !== undefined) {
     let options_auth = { user: data.username, password: data.password };
     let client = new Client(options_auth);
 
     await client.get(`${sonarURL}`, (data: any, response: any) => {
       console.log({ data });
 
-      if (!isStatusCodeNotOk(response.statusCode)) {
+      if (isStatusCodeNotOk(response.statusCode)) {
         vscode.window.showErrorMessage(
           "Please Double Check the project key and sonarURL"
         );
