@@ -30,6 +30,11 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(myStatusBarItem);
 }
 
+type Element = {
+  metric: string;
+  value: string;
+};
+
 async function showResult(data: Data) {
   projName = data.project;
   const sonarURL = `${data.sonarURL}/api/measures/component?metricKeys=coverage,bugs,code_smells,vulnerabilities,alert_status&component=${data.project}`;
@@ -40,50 +45,70 @@ async function showResult(data: Data) {
     await client.get(`${sonarURL}`, (data: any, response: any) => {
       console.log({ data });
 
-      if (response.statusCode === 200) {
-        data.component.measures.map((element: any) => {
-          if (element.metric === "coverage") {
-            if (parseInt(element.value) < 80) {
-              vscode.window.showErrorMessage(
-                `Code Coverage is ${element.value}%`
-              );
-            } else {
-              vscode.window.showInformationMessage(
-                `Code Coverage is ${element.value}%`
-              );
-            }
-          } else if (element.metric === "bugs") {
-            vscode.window.showInformationMessage(
-              `There are ${element.value} Bugs`
-            );
-          } else if (element.metric === "alert_status") {
-            let qualityGate: string;
-            if (element.value === "OK") {
-              vscode.window.showInformationMessage(`Quality Gate is Passed`);
-              myStatusBarItem.text = `$(megaphone) Sonar Status: Passed $(check)`;
-              myStatusBarItem.show();
-            } else {
-              vscode.window.showErrorMessage("Quality Gate is Failing");
-              myStatusBarItem.text = `$(megaphone) Sonar Status: Failed $(x)`;
-              myStatusBarItem.show();
-            }
-          } else if (element.metric === "code_smells") {
-            vscode.window.showInformationMessage(
-              `There are ${element.value} Smelly Codes`
-            );
-          } else if (element.metric === "vulnerabilities") {
-            vscode.window.showInformationMessage(
-              `There are ${element.value} Vulnerabilities`
-            );
-          }
-        });
-      } else {
+      if (!isStatusCodeNotOk(response.statusCode)) {
         vscode.window.showErrorMessage(
           "Please Double Check the project key and sonarURL"
         );
       }
+
+      data.component.measures.map((element: Element) => {
+        classifyElement(element);
+      });
     });
   }
 }
+
+const classifyElement = (element: Element) => {
+  if (isMetricCoverage(element.metric)) {
+    if (parseInt(element.value) < 80) {
+      vscode.window.showErrorMessage(`Code Coverage is ${element.value}%`);
+    } else {
+      vscode.window.showInformationMessage(
+        `Code Coverage is ${element.value}%`
+      );
+    }
+  }
+
+  if (isMetricBugs(element.metric)) {
+    vscode.window.showInformationMessage(`There are ${element.value} Bugs`);
+  }
+
+  if (isMetricAlertStatus(element.metric)) {
+    if (element.value === "OK") {
+      vscode.window.showInformationMessage(`Quality Gate is Passed`);
+      myStatusBarItem.text = `$(megaphone) Sonar Status: Passed $(check)`;
+      myStatusBarItem.show();
+    } else {
+      vscode.window.showErrorMessage("Quality Gate is Failing");
+      myStatusBarItem.text = `$(megaphone) Sonar Status: Failed $(x)`;
+      myStatusBarItem.show();
+    }
+  }
+
+  if (isMetricCodeSmells(element.metric)) {
+    vscode.window.showInformationMessage(
+      `There are ${element.value} Smelly Codes`
+    );
+  }
+
+  if (isMetricVulnerabilities(element.metric)) {
+    vscode.window.showInformationMessage(
+      `There are ${element.value} Vulnerabilities`
+    );
+  }
+};
+
+const isStatusCodeNotOk = (statusCode: number) => statusCode !== 200;
+
+const isMetricCoverage = (metric: string) => metric === "coverage";
+
+const isMetricBugs = (metric: string) => metric === "bugs";
+
+const isMetricAlertStatus = (metric: string) => metric === "alert_status";
+
+const isMetricCodeSmells = (metric: string) => metric === "code_smells";
+
+const isMetricVulnerabilities = (metric: string) =>
+  metric === "vulnerabilities";
 
 export function deactivate() {}
