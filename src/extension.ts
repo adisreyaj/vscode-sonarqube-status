@@ -1,18 +1,18 @@
 import * as vscode from 'vscode';
+import { COMMANDS } from './data/constants';
 import { checkAndCreateConfigFileIfNeeded } from './helpers/file.helpers';
 import { getMetrics } from './helpers/sonar.helper';
 import { SonarQuickStatsProvider } from './views/quick-stats.webview';
 
 export function activate(context: vscode.ExtensionContext) {
-  const commandId = 'extension.getSonarQubeStatus';
   const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 50);
-  statusBarItem.command = commandId;
+  statusBarItem.command = COMMANDS.getStatus;
   const quickInfoProvider = new SonarQuickStatsProvider(context.extensionUri);
   const quickInfoWebView = vscode.window.registerWebviewViewProvider(
-    'sonarqubeStats.quickInfo',
+    'sonarqubeStatus.quickInfo',
     quickInfoProvider
   );
-  const disposable = vscode.commands.registerCommand(commandId, async () => {
+  const startRoutine = async () => {
     const workspace = vscode.workspace.workspaceFolders;
     if (workspace) {
       const config = await checkAndCreateConfigFileIfNeeded(workspace[0].uri.path as string);
@@ -40,9 +40,25 @@ export function activate(context: vscode.ExtensionContext) {
         }
       }
     }
-  });
+  };
+
+  const refresh = () => {
+    vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Notification,
+        title: 'Refreshing Sonarqube report...',
+        cancellable: false,
+      },
+      async (progress) => {
+        progress.report({ increment: 10 });
+        await startRoutine();
+        progress.report({ increment: 100 });
+      }
+    );
+  };
+  context.subscriptions.push(vscode.commands.registerCommand(COMMANDS.getStatus, startRoutine));
+  context.subscriptions.push(vscode.commands.registerCommand(COMMANDS.refresh, refresh));
   context.subscriptions.push(quickInfoWebView);
-  context.subscriptions.push(disposable);
   context.subscriptions.push(statusBarItem);
 }
 

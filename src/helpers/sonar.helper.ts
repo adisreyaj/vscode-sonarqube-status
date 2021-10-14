@@ -2,10 +2,7 @@ import * as humanize from 'humanize-duration';
 import { groupBy } from 'lodash-es';
 import { millify } from 'millify';
 import { Client } from 'sonarqube-sdk';
-import {
-  MeasureComponentBaseMeasure,
-  MeasureComponentMetric,
-} from 'sonarqube-sdk/dist/interfaces/meaures.interface';
+import { MeasureComponentBaseMeasure, MeasureComponentMetric } from 'sonarqube-sdk/interfaces';
 import * as vscode from 'vscode';
 import { Config } from '../interfaces/config.interface';
 

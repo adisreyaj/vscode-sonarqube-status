@@ -27,14 +27,24 @@
     "code coverage"
   ],
   "activationEvents": [
-    "onCommand:extension.getSonarQubeStatus"
+    "onCommand:sonarqubeStatus.get",
+    "onCommand:sonarqubeStatus.refresh",
+    "onView:sonarqubeStatus.quickInfo"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.getSonarQubeStatus",
-        "title": "SonarQube: Get Info"
+        "command": "sonarqubeStatus.get",
+        "title": "SonarQube: Get Report"
+      },
+      {
+        "command": "sonarqubeStatus.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "images/light/refresh.svg",
+          "dark": "images/dark/refresh.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -49,9 +59,18 @@
     "views": {
       "sonarqubeStatus": [
         {
-          "id": "sonarqubeStats.quickInfo",
+          "id": "sonarqubeStatus.quickInfo",
           "type": "webview",
           "name": "Quick Info"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "sonarqubeStatus.refresh",
+          "when": "view == sonarqubeStatus.quickInfo",
+          "group": "navigation"
         }
       ]
     }
