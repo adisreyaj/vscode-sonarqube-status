@@ -2,8 +2,9 @@ import * as humanize from 'humanize-duration';
 import { groupBy } from 'lodash-es';
 import { millify } from 'millify';
 import { Client } from 'sonarqube-sdk';
-import { MeasureComponentBaseMeasure, MeasureComponentMetric } from 'sonarqube-sdk/interfaces';
+import { MeasuresRequest, MeasuresResponse } from 'sonarqube-sdk/interfaces';
 import * as vscode from 'vscode';
+import { METRICS_TO_FETCH, RATING_VALUE_MAP } from '../data/constants';
 import { Config } from '../interfaces/config.interface';
 
 let client: Client | null = null;
@@ -13,7 +14,7 @@ export const sonarSDKClient = (config: Config) => {
     return client;
   } else {
     try {
-      client = new Client({ projectKey: config.project, url: config.sonarURL, auth: config.auth });
+      client = new Client({ url: config.sonarURL, auth: config.auth });
       return client;
     } catch (error: any) {
       vscode.window.showErrorMessage(error?.message);
@@ -26,23 +27,8 @@ export async function getMetrics(config: Config) {
     if (client) {
       const data = await client.measures.component({
         component: config.project,
-        additionalFields: ['metrics'],
-        metricKeys: [
-          'bugs',
-          'coverage',
-          'code_smells',
-          'alert_status',
-          'vulnerabilities',
-          'cognitive_complexity',
-          'security_review_rating',
-          'security_hotspots',
-          'critical_violations',
-          'duplicated_blocks',
-          'sqale_index',
-          'sqale_rating',
-          'ncloc',
-          'duplicated_lines_density',
-        ],
+        additionalFields: [MeasuresRequest.MeasuresRequestAdditionalField.metrics],
+        metricKeys: METRICS_TO_FETCH,
       });
       if (data && data.metrics) {
         return parseResponse(data.component.measures, data?.metrics);
@@ -54,7 +40,10 @@ export async function getMetrics(config: Config) {
   }
 }
 
-function parseResponse(measures: MeasureComponentBaseMeasure[], metrics: MeasureComponentMetric[]) {
+function parseResponse(
+  measures: MeasuresResponse.ComponentBaseMeasures[],
+  metrics: MeasuresResponse.ComponentMetric[]
+) {
   const metricsMeta: Record<string, any> = metrics.reduce(
     (acc, curr) => ({ ...acc, [curr.key]: curr }),
     {}
@@ -71,13 +60,6 @@ function parseResponse(measures: MeasureComponentBaseMeasure[], metrics: Measure
   return grouped;
 }
 
-const RATING_VALUE_MAP: Record<number, string> = {
-  1: 'A',
-  2: 'B',
-  3: 'C',
-  4: 'D',
-  5: 'E',
-};
 function addFormatting(value: string | undefined, opts: any) {
   if (!value) {
     return null;

@@ -109,6 +109,6 @@
     "lodash-es": "^4.17.21",
     "millify": "^4.0.0",
     "node-fetch": "^3.0.0",
-    "sonarqube-sdk": "file:../sonarqube-sdk/sonarqube-sdk-0.1.0.tgz"
+    "sonarqube-sdk": "^0.1.0"
   }
 }
