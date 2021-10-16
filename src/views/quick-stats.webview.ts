@@ -23,10 +23,10 @@ export class SonarQuickStatsProvider implements vscode.WebviewViewProvider {
 
   private getHtmlForWebview(webview: vscode.Webview) {
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.extensionUri, 'src/media', 'quick-stats.js')
+      vscode.Uri.joinPath(this.extensionUri, 'dist/media', 'quick-stats.js')
     );
     const styleMainUri = webview.asWebviewUri(
-      vscode.Uri.joinPath(this.extensionUri, 'src/media', 'quick-stats.css')
+      vscode.Uri.joinPath(this.extensionUri, 'dist/media', 'quick-stats.css')
     );
 
     const nonce = this.getNonce();

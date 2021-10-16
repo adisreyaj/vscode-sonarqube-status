@@ -24,10 +24,14 @@ export function activate(context: vscode.ExtensionContext) {
   async function getSonarQubeStatus() {
     const workspace = vscode.workspace.workspaceFolders;
     if (workspace) {
-      const config = await checkAndCreateConfigFileIfNeeded(workspace[0].uri.path as string);
+      const { configured, config } = await checkAndCreateConfigFileIfNeeded(
+        workspace[0].uri.path as string
+      );
       if (config === null) {
         vscode.window.showErrorMessage('Please configure the project first!', 'Okay');
-      } else {
+        return;
+      }
+      if (configured) {
         try {
           const data = await getMetrics(config);
           if (data) {
@@ -60,6 +64,11 @@ export function activate(context: vscode.ExtensionContext) {
         } catch (error) {
           vscode.window.showErrorMessage('Failed to fetch measures');
         }
+      } else {
+        vscode.window.showErrorMessage(
+          'Please update the config in .vscode/project.json file',
+          'Okay'
+        );
       }
     }
   }
