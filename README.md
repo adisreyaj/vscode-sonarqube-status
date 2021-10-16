@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/adisreyaj/vscode-sonarqube-status">
-    <img src="images/logo.png" alt="Logo" width="120" height="120">
+    <img src="https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/logo.png" alt="Logo" width="120" height="120">
   </a>
 
   <h3 align="center">SonarQube Project Status</h3>
