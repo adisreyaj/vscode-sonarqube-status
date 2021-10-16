@@ -12,7 +12,16 @@ export function activate(context: vscode.ExtensionContext) {
     'sonarqubeStatus.quickInfo',
     quickInfoProvider
   );
-  const startRoutine = async () => {
+  context.subscriptions.push(
+    vscode.commands.registerCommand(COMMANDS.getStatus, getStatusWithProgress)
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand(COMMANDS.refresh, getStatusWithProgress)
+  );
+  context.subscriptions.push(quickInfoWebView);
+  context.subscriptions.push(statusBarItem);
+
+  async function getSonarQubeStatus() {
     const workspace = vscode.workspace.workspaceFolders;
     if (workspace) {
       const config = await checkAndCreateConfigFileIfNeeded(workspace[0].uri.path as string);
@@ -34,15 +43,28 @@ export function activate(context: vscode.ExtensionContext) {
               ],
               data['Releasability']?.[0]
             );
+            const status = data['Releasability']?.[0]?.value;
+            let statusBarText = null;
+            if (status === 'ERROR') {
+              statusBarText = `$(testing-failed-icon) SonarQube: Failed`;
+            } else if (status === 'OK') {
+              statusBarText = `$(testing-passed-icon) SonarQube: Passed`;
+            }
+            if (statusBarText) {
+              statusBarItem.text = statusBarText;
+              statusBarItem.show();
+            } else {
+              statusBarItem.hide();
+            }
           }
         } catch (error) {
           vscode.window.showErrorMessage('Failed to fetch measures');
         }
       }
     }
-  };
+  }
 
-  const refresh = () => {
+  function getStatusWithProgress() {
     vscode.window.withProgress(
       {
         location: vscode.ProgressLocation.Notification,
@@ -51,15 +73,11 @@ export function activate(context: vscode.ExtensionContext) {
       },
       async (progress) => {
         progress.report({ increment: 10 });
-        await startRoutine();
+        await getSonarQubeStatus();
         progress.report({ increment: 100 });
       }
     );
-  };
-  context.subscriptions.push(vscode.commands.registerCommand(COMMANDS.getStatus, startRoutine));
-  context.subscriptions.push(vscode.commands.registerCommand(COMMANDS.refresh, refresh));
-  context.subscriptions.push(quickInfoWebView);
-  context.subscriptions.push(statusBarItem);
+  }
 }
 
 export function deactivate() {}
