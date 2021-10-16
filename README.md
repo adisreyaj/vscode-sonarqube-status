@@ -1,66 +1,66 @@
-# SonarQube Project Status
+<p align="center">
+  <a href="https://github.com/adisreyaj/vscode-sonarqube-status">
+    <img src="images/logo.png" alt="Logo" width="120" height="120">
+  </a>
 
-![SonarQube Status Resulst](images/logo.png)
+  <h3 align="center">SonarQube Project Status</h3>
+  <p align="center">VSCode extension to view SonarQube results right inside your favorite IDE - VSCode
+</p>
+</p>
 
 SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in production.
 
-It will only work for **Public** projects which doesn't need any Authentication with the SonarQube server.
-
-A Future release for the private Sonar projects is in roadmap.
-
-This extension can help you get the build status like:
-
-- Quality Gate
-- Code Smells
-- Bugs
-- Code Coverage
-- Vulnarabilities
-
-right inside your favorite IDE - VSCode
+![SonarQube Status Results](images/sonarqube-vscode-status.jpg)
 
 ## How to Use
 
 1. Install the Extension and Make sure it is activated.
-1. Open the Command Palette by pression `Ctrl + Shift + P`.
-1. Type `Get Build Status`. Click `Enter`.
-1. You can see that the configuration file will be created for you in the **.vscode** folder.
-1. Add your key in the config file.
-1. Comeback and follow the step 2.
+2. Click on the SonarQube logo on the activity bar or run the command from Command Palette:
 
-Viola....
+```
+SonarQube: Get Report
+```
 
-## Features
-
-![Status Bar Item for Easy insight](images/sonar-status-bar.png)
-
-1. You don't have to go outside the IDE to see the status of the code analysis.
-1. Easily accessible from the **Command Palette**
-1. Get the details only when you want it.
-1. Easily dismissable notifications.
-1. Just have to add the project key and sonarqube server URL in the configuration file.
-
-![Access from Command Palette](images/get-sonar-status.png)
-![get Simple Notifications](images/sonar-status.png)
-
-## Extension Settings
-
-The extension gets data from a configuration file **.vscode > project.json**
-
-Here is how the configuration file looks:
+3. This will create a `project.json` file in `.vscode` folder.
+4. Make sure to add the details:
 
 ```json
 {
-  "project": "sample-project",
-  "sonarURL": "sonar.yourserver.com"
+  "project": "adisreyaj_compito",
+  "sonarURL": "https://sonarcloud.io",
+  "auth": {
+    "username": "",
+    "password": ""
+  }
 }
 ```
 
-**NOTE:** Please make sure to add `http://` with your sonarURL and should not have a trailing `/`.
+`auth` is optional property. Its only required for private SonarQube projects.
 
-For Eg:<br/>
-`http://sonar.myserver.com` - **Right** <br/>
-`www.sonar.myserver.com/` - **Wrong**
+5. Run the command again and you should see the report on the SonarQube section in the activity bar.
 
-Just fill the file and you are good to go.
+## Features
 
-**Enjoy!**
+1. Status bar item added for quickly knowing the Quality Gate Status without having to click elsewhere.
+
+![Sonarqube passed](images/sonar-passed.png)
+
+![Sonarqube failed](images/sonar-failed.png)
+
+2. Full details in the Sonarqube Dedicated section
+
+![Sonarqube Full Result](images/sonar-full-details.png)
+
+3. Refresh button to quickly refresh the results.
+
+## Roadmap
+
+See the [open issues](https://github.com/adisreyaj/vscode-sonarqube-status/issues) for a list of proposed features (and known issues).
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Show your support
+
+Please ⭐️ this repository if this project helped you!
