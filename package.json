@@ -2,7 +2,7 @@
   "name": "sonarqube-status",
   "displayName": "SonarQube Project Status",
   "description": "Get the status of your project including the Build status, Static code analysis statuses and more...",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.32.0"
   },
@@ -12,7 +12,7 @@
   "author": {
     "name": "Adithya Sreyaj",
     "email": "adi.sreyaj@gmail.com",
-    "url": "https://sreyaj.com"
+    "url": "https://adi.so"
   },
   "icon": "images/logo.png",
   "repository": {
@@ -22,21 +22,59 @@
   "publisher": "adisreyaj",
   "keywords": [
     "sonarqube",
+    "sonarcloud",
     "static code analyzer",
     "sonar scanner result",
     "code coverage"
   ],
   "activationEvents": [
-    "onCommand:extension.getBuildStatus"
+    "onCommand:sonarqubeStatus.get",
+    "onCommand:sonarqubeStatus.refresh",
+    "onView:sonarqubeStatus.quickInfo"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.getBuildStatus",
-        "title": "SonarQube: Get Build Status"
+        "command": "sonarqubeStatus.get",
+        "title": "SonarQube: Get Report"
+      },
+      {
+        "command": "sonarqubeStatus.refresh",
+        "title": "Refresh",
+        "icon": {
+          "light": "images/light/refresh.svg",
+          "dark": "images/dark/refresh.svg"
+        }
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "sonarqubeStatus",
+          "title": "SonarQube Status",
+          "icon": "images/sonarqube.svg"
+        }
+      ]
+    },
+    "views": {
+      "sonarqubeStatus": [
+        {
+          "id": "sonarqubeStatus.quickInfo",
+          "type": "webview",
+          "name": "Quick Info"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "sonarqubeStatus.refresh",
+          "when": "view == sonarqubeStatus.quickInfo",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "webpack --mode production",
@@ -46,16 +84,32 @@
     "test-compile": "tsc -p ./"
   },
   "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/humanize-duration": "^3.25.1",
+    "@types/lodash-es": "^4.17.5",
     "@types/mocha": "^2.2.42",
-    "@types/node": "^10.17.27",
+    "@types/node": "^10.17.60",
+    "@types/vscode": "^1.61.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.2",
     "ts-loader": "^5.4.5",
-    "tslint": "^5.20.1",
-    "typescript": "^3.9.7",
-    "vscode": "^1.1.37",
-    "webpack": "^4.43.0",
+    "typescript": "^4.4.4",
+    "vscode-test": "^1.6.1",
+    "webpack": "^5.58.2",
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "node-rest-client": "^3.1.0"
+    "fs-extra": "^10.0.0",
+    "humanize-duration": "^3.27.0",
+    "lodash-es": "^4.17.21",
+    "millify": "^4.0.0",
+    "node-fetch": "^3.0.0",
+    "sonarqube-sdk": "^0.1.0"
   }
 }

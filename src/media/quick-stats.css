@@ -1,0 +1,62 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--vscode-foreground);
+  font-size: var(--vscode-font-size);
+  font-weight: var(--vscode-font-weight);
+  font-family: var(--vscode-font-family);
+  background-color: var(--vscode-editor-background);
+}
+
+.measures,
+.quality-gate {
+  padding: 0.5rem;
+}
+h2 {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.measures {
+}
+
+.quality-gate__badge {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.2rem 0.5rem;
+}
+.quality-gate__pass svg {
+  color: rgb(18, 143, 18);
+}
+.quality-gate__fail svg {
+  color: rgb(169, 40, 40);
+}
+
+.quick-stats__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+
+.quick-stats__list-item {
+  padding: 0.5rem;
+  border: 1px solid;
+}
+
+.item__value {
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.item__label {
+  font-size: 0.575rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
