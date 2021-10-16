@@ -10,7 +10,7 @@
 
 SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in production.
 
-![SonarQube Status Results](images/sonarqube-vscode-status.jpg)
+![SonarQube Status Results](https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/sonarqube-vscode-status.jpg)
 
 ## How to Use
 
@@ -43,13 +43,13 @@ SonarQube: Get Report
 
 1. Status bar item added for quickly knowing the Quality Gate Status without having to click elsewhere.
 
-![Sonarqube passed](images/sonar-passed.png)
+![Sonarqube passed](https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/sonar-passed.png)
 
-![Sonarqube failed](images/sonar-failed.png)
+![Sonarqube failed](https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/sonar-failed.png)
 
 2. Full details in the Sonarqube Dedicated section
 
-![Sonarqube Full Result](images/sonar-full-details.png)
+![Sonarqube Full Result](https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/sonar-full-details.png)
 
 3. Refresh button to quickly refresh the results.
 
