@@ -109,7 +109,7 @@
     "humanize-duration": "^3.27.0",
     "lodash-es": "^4.17.21",
     "millify": "^4.0.0",
-    "node-fetch": "^3.0.0",
+    "node-fetch": "^3.1.1",
     "sonarqube-sdk": "^0.1.0"
   }
 }
