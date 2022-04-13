@@ -1,6 +1,16 @@
 export const VSCODE_PROJECT_CONFIG = {
   project: '<your-key-here>',
   sonarURL: '<your-sonar-url>',
+  auth:
+  {
+    username: '<sonar-username>',
+    password: '<sonar-password>'
+  }
+};
+
+export const VSCODE_PROJECT_JSON_FORMAT_OPTIONS = {
+  spaces: 4,
+  EOL: "\n",
 };
 
 export const COMMANDS = {
