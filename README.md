@@ -3,12 +3,13 @@
     <img src="https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/logo.png" alt="Logo" width="120" height="120">
   </a>
 
-  <h3 align="center">SonarQube Project Status</h3>
+<h3 align="center">SonarQube Project Status</h3>
   <p align="center">VSCode extension to view SonarQube results right inside your favorite IDE - VSCode
 </p>
 </p>
 
-SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in production.
+SonarQube is a static code analyzer for your project. It makes sure your code is up to the mark and will not break in
+production.
 
 ![SonarQube Status Results](https://raw.githubusercontent.com/adisreyaj/vscode-sonarqube-status/master/images/sonarqube-vscode-status.jpg)
 
@@ -24,6 +25,8 @@ SonarQube: Get Report
 3. This will create a `project.json` file in `.vscode` folder.
 4. Make sure to add the details:
 
+### Using Password Auth
+
 ```json
 {
   "project": "adisreyaj_compito",
@@ -35,7 +38,20 @@ SonarQube: Get Report
 }
 ```
 
-`auth` is optional property. Its only required for private SonarQube projects.
+### Using Token Auth
+
+```json
+{
+  "project": "adisreyaj_compito",
+  "sonarURL": "https://sonarcloud.io",
+  "auth": {
+    "token": ""
+  }
+}
+```
+
+The `auth` is optional property. It's only required for private SonarQube projects. You can etither use the **
+username/password** based authentication or **token-based** authentication.
 
 5. Run the command again and you should see the report on the SonarQube section in the activity bar.
 
@@ -55,7 +71,8 @@ SonarQube: Get Report
 
 ## Roadmap
 
-See the [open issues](https://github.com/adisreyaj/vscode-sonarqube-status/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/adisreyaj/vscode-sonarqube-status/issues) for a list of proposed features (and
+known issues).
 
 ## License
 

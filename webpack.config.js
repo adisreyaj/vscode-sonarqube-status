@@ -1,7 +1,7 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-/**@type {import('webpack').Configuration}*/
+/** @type {import('webpack').Configuration} */
 
 const config = {
   target: 'node',
@@ -29,6 +29,12 @@ const config = {
             loader: 'ts-loader',
           },
         ],
+      },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
       },
     ],
   },
