@@ -54,6 +54,23 @@ export const isConfigured = (config: Config) => {
     isAuthConfigured,
     authType: type,
   };
+}
+
+export function isPullRequestOrBranchConfigured(config: Config) {
+  const isBranchConfigured = has(config, 'branch') &&
+    !config.branch?.includes('optional-branch-name');
+
+  const isPullRequestConfigured = has(config, 'pullRequest') &&
+    !config.pullRequest?.includes('optional-pull-request-id');
+
+  if ( isBranchConfigured || isPullRequestConfigured) {
+    // Give pullRequest highest priority
+    if ( isPullRequestConfigured ) {
+      return { pullRequest: config.pullRequest };
+    }
+
+    return { branch: config.branch };
+  }
 };
 
 export const createDefaultConfigFile = async (path: string) => {

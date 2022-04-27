@@ -7,5 +7,7 @@ interface AuthConfig {
 export interface Config {
   project: string;
   sonarURL: string;
+  branch?: string;
+  pullRequest?: string;
   auth?: AuthConfig;
 }
