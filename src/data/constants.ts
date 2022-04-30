@@ -1,16 +1,17 @@
 export const VSCODE_PROJECT_CONFIG = {
+  _comment:
+    'The authentication can be proceed in two ways. Using combination of username and password or token. The project.json which contains two of them at once is invalid.',
   project: '<your-key-here>',
   sonarURL: '<your-sonar-url>',
-  auth:
-  {
+  auth: {
     username: '<sonar-username>',
-    password: '<sonar-password>'
-  }
+    password: '<sonar-password>',
+  },
 };
 
 export const VSCODE_PROJECT_JSON_FORMAT_OPTIONS = {
   spaces: 4,
-  EOL: "\n",
+  EOL: '\n',
 };
 
 export const COMMANDS = {

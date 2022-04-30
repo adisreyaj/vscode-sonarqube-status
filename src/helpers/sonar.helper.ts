@@ -1,31 +1,59 @@
 import * as humanize from 'humanize-duration';
 import { groupBy } from 'lodash-es';
 import { millify } from 'millify';
-import { Client } from 'sonarqube-sdk';
-import { MeasuresRequest, MeasuresResponse } from 'sonarqube-sdk/interfaces';
+import { Client, MeasuresRequest, MeasuresResponse, SonarQubeSDKAuth } from 'sonarqube-sdk';
 import * as vscode from 'vscode';
 import { METRICS_TO_FETCH, RATING_VALUE_MAP } from '../data/constants';
 import { Config } from '../interfaces/config.interface';
+import { isConfigured } from './file.helpers';
 
 let client: Client | null = null;
 
 export const sonarSDKClient = (config: Config) => {
   if (client) {
     return client;
-  } else {
-    try {
-      client = new Client({ url: config.sonarURL, auth: config.auth });
-      return client;
-    } catch (error: any) {
-      vscode.window.showErrorMessage(error?.message);
-    }
+  }
+  const { isConfigured: configured, authType } = isConfigured(config);
+  if (!configured) {
+    throw new Error('Not configured');
+  }
+
+  const getAuthConfig: Record<string, () => SonarQubeSDKAuth | null> = {
+    token: () =>
+      config.auth?.token
+        ? {
+            type: 'token',
+            token: config.auth?.token,
+          }
+        : null,
+    password: () =>
+      config.auth?.username && config.auth?.password
+        ? {
+            type: 'password',
+            username: config.auth?.username,
+            password: config.auth?.password,
+          }
+        : null,
+  };
+
+  const auth = getAuthConfig[authType]();
+  if (!auth) {
+    throw new Error('Auth not configured');
+  }
+  try {
+    client = new Client({ url: config.sonarURL, auth });
+    return client;
+  } catch (error: any) {
+    vscode.window.showErrorMessage(error?.message);
+    return null;
   }
 };
+
 export async function getMetrics(config: Config) {
   try {
-    const client = sonarSDKClient(config);
-    if (client) {
-      const data = await client.measures.component({
+    const sonarClient = sonarSDKClient(config);
+    if (sonarClient) {
+      const data = await sonarClient.measures.component({
         component: config.project,
         additionalFields: [MeasuresRequest.MeasuresRequestAdditionalField.metrics],
         metricKeys: METRICS_TO_FETCH,
@@ -34,8 +62,8 @@ export async function getMetrics(config: Config) {
         return parseResponse(data.component.measures, data?.metrics);
       }
     }
+    return null;
   } catch (error) {
-    console.error(error);
     return null;
   }
 }
@@ -64,7 +92,7 @@ function addFormatting(value: string | undefined, opts: any) {
   if (!value) {
     return null;
   }
-  const type = opts.type;
+  const { type } = opts;
   switch (type) {
     case 'INT':
       return millify(+value);

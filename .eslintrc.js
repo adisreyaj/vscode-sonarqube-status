@@ -11,11 +11,13 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    'import/extensions': 'never',
+    'import/extensions': 'off',
+    'no-use-before-define': 'off',
   },
   settings: {
     'import/resolver': {
       typescript: {},
+      vscode: {},
     },
   },
 };
