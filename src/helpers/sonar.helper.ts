@@ -63,13 +63,28 @@ export async function getMetrics(config: Config) {
         metricKeys: METRICS_TO_FETCH,
       };
 
-      const data = await sonarClient.measures.component({...inputData, ...branchOrPullRequest});
+      const data:any = await sonarClient.measures.component({...inputData, ...branchOrPullRequest});
       if (data && data.metrics) {
         return parseResponse(data.component.measures, data?.metrics);
+      }
+      else if('errors' in data) {
+          let errorMessage = `SonarQube Error : ${data.errors[0].msg}`;
+          vscode.window.showErrorMessage(errorMessage);
       }
     }
     return null;
   } catch (error) {
+    let errorMessage = "SonarQube Status : Connection Error";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    if (errorMessage.includes('reason')) {
+      let reason = errorMessage.split('reason:')[1];
+      if (reason.includes('getaddrinfo ENOTFOUND')) {
+        reason = reason.replace('getaddrinfo ENOTFOUND', 'Cannot access to SQ server :')
+      }
+      vscode.window.showErrorMessage(reason)
+    }
     return null;
   }
 }
