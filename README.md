@@ -18,12 +18,13 @@ production.
 1. Install the Extension and Make sure it is activated.
 2. Click on the SonarQube logo on the activity bar or run the command from Command Palette:
 
-```
-SonarQube: Get Report
-```
+    ```
+    SonarQube: Get Report
+    ```
 
 3. This will create a `project.json` file in `.vscode` folder.
 4. Make sure to add the details:
+
 
 ### Using Password Auth
 
@@ -50,8 +51,37 @@ SonarQube: Get Report
 }
 ```
 
-The `auth` is optional property. It's only required for private SonarQube projects. You can etither use the **
-username/password** based authentication or **token-based** authentication.
+### Using SonarQube pullRequest Analysis Metrics
+
+```json
+{
+  "project": "adisreyaj_compito",
+  "sonarURL": "https://sonarcloud.io",
+  "pullRequest": 212,
+  "auth": {
+    "token": ""
+  }
+}
+```
+
+### Using SonarQube branch Analysis Metrics
+
+```json
+{
+  "project": "adisreyaj_compito",
+  "sonarURL": "https://sonarcloud.io",
+  "branch": "bugfix/fixMe",
+  "auth": {
+    "token": ""
+  }
+}
+```
+
+| Optional property | Description |
+| ----------------- | ----------- | 
+| `auth`            | Its only required for private SonarQube projects. The `auth` can be done via combination of `username` and `password` or `token`. Please look at sample configuration body file described above. |
+| `branch`          | It should be added if you want to collect metrics from [SonarQube branch analysis](https://docs.sonarqube.org/latest/branches/overview/) under project. |
+| `pullRequest`     | It should be added if you want to collect metrics from [SonarQube pullRequest analysis](https://docs.sonarqube.org/latest/analysis/pull-request/) under project. |
 
 5. Run the command again and you should see the report on the SonarQube section in the activity bar.
 

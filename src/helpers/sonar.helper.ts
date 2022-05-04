@@ -5,7 +5,7 @@ import { Client, MeasuresRequest, MeasuresResponse, SonarQubeSDKAuth } from 'son
 import * as vscode from 'vscode';
 import { METRICS_TO_FETCH, RATING_VALUE_MAP } from '../data/constants';
 import { Config } from '../interfaces/config.interface';
-import { isConfigured } from './file.helpers';
+import { isConfigured, isPullRequestOrBranchConfigured } from './file.helpers';
 
 let client: Client | null = null;
 
@@ -52,18 +52,39 @@ export const sonarSDKClient = (config: Config) => {
 export async function getMetrics(config: Config) {
   try {
     const sonarClient = sonarSDKClient(config);
+
     if (sonarClient) {
-      const data = await sonarClient.measures.component({
+      // Collect pullRequest or branch configuration
+      const branchOrPullRequest = isPullRequestOrBranchConfigured(config);
+
+      const inputData = {
         component: config.project,
         additionalFields: [MeasuresRequest.MeasuresRequestAdditionalField.metrics],
         metricKeys: METRICS_TO_FETCH,
-      });
+      };
+
+      const data:any = await sonarClient.measures.component({...inputData, ...branchOrPullRequest});
       if (data && data.metrics) {
         return parseResponse(data.component.measures, data?.metrics);
+      }
+      else if('errors' in data) {
+          let errorMessage = `SonarQube Error : ${data.errors[0].msg}`;
+          vscode.window.showErrorMessage(errorMessage);
       }
     }
     return null;
   } catch (error) {
+    let errorMessage = "SonarQube Status : Connection Error";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    if (errorMessage.includes('reason')) {
+      let reason = errorMessage.split('reason:')[1];
+      if (reason.includes('getaddrinfo ENOTFOUND')) {
+        reason = reason.replace('getaddrinfo ENOTFOUND', 'Cannot access to SQ server :')
+      }
+      vscode.window.showErrorMessage(reason)
+    }
     return null;
   }
 }
