@@ -50,12 +50,12 @@ h2 {
 }
 
 .item__value {
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
 .item__label {
-  font-size: 0.575rem;
+  font-size: 0.875rem;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
