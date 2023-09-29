@@ -36,13 +36,15 @@
   function createCard(card) {
     return `
       <li class="quick-stats__list-item">
-      <header>
-        <p class="item__value">${card.value}</p>
-      </header>
-      <footer>
-        <p class="item__label">${card.label}</p>
-      </footer>
-    </li>
+      <a href="${card.url}">
+        <header>
+          <p class="item__value">${card.value}</p>
+        </header>
+      </a>
+        <footer>
+          <p class="item__label">${card.label}</p>
+        </footer>
+      </li>
     `;
   }
 

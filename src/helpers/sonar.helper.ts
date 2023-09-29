@@ -59,7 +59,7 @@ export async function getMetrics(config: Config) {
         metricKeys: METRICS_TO_FETCH,
       });
       if (data && data.metrics) {
-        return parseResponse(data.component.measures, data?.metrics);
+        return parseResponse(data.component.measures, data?.metrics, config);
       }
     }
     return null;
@@ -70,7 +70,8 @@ export async function getMetrics(config: Config) {
 
 function parseResponse(
   measures: MeasuresResponse.ComponentBaseMeasures[],
-  metrics: MeasuresResponse.ComponentMetric[]
+  metrics: MeasuresResponse.ComponentMetric[],
+  config: Config
 ) {
   const metricsMeta: Record<string, any> = metrics.reduce(
     (acc, curr) => ({ ...acc, [curr.key]: curr }),
@@ -81,6 +82,7 @@ function parseResponse(
     label: metricsMeta[item.metric].name,
     type: metricsMeta[item.metric].type,
     domain: metricsMeta[item.metric].domain,
+    url: `${config.sonarURL}/component_measures?metric=${item.metric}&id=${config.project}`,
     value: addFormatting(item.value, metricsMeta[item.metric]),
   }));
 
